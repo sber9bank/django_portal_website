@@ -160,7 +160,7 @@ def register(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Регистрация прошла успешно! Добро пожаловать.')
-                return redirect('profile', username=user.id)  # Перенаправление на профиль
+                return redirect('profile', identifier=username)
             else:
                 messages.error(request, 'Ошибка аутентификации. Попробуйте войти.')
                 return redirect('login')
