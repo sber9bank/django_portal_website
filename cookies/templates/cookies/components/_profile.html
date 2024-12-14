@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <!-- Профиль пользователя -->
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="{{ user_profile.profile.avatar.url|default:'https://via.placeholder.com/150' }}"
+                                 alt="Avatar пользователя"
+                                 class="rounded-circle"
+                                 width="150"
+                                 loading="lazy">
+                            <div class="mt-3">
+                                <h4>{{ user_profile.first_name }} {{ user_profile.last_name }}</h4>
+                                <p class="text-secondary mb-1">{{ user_profile.profile.job_title|default:"Без должности" }}</p>
+                                <p class="text-muted font-size-sm">{{ user_profile.profile.country|default:"Неизвестная страна" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <!-- Ссылки на социальные сети -->
+                        {% if user_profile.profile.website %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                Вебсайт
+                            </h6>
+                            <span class="text-secondary">
+                                <a href="{{ user_profile.profile.website }}" target="_blank" rel="noopener noreferrer">{{ user_profile.profile.website }}</a>
+                            </span>
+                        </li>
+                        {% endif %}
+
+                        {% if user_profile.profile.github %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                </svg>
+                                Github
+                            </h6>
+                            <span class="text-secondary">
+                                <a href="{{ user_profile.profile.github }}" target="_blank" rel="noopener noreferrer">{{ user_profile.profile.github }}</a>
+                            </span>
+                        </li>
+                        {% endif %}
+
+                        {% if user_profile.profile.instagram %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                                Instagram
+                            </h6>
+                            <span class="text-secondary">
+                                <a href="{{ user_profile.profile.instagram }}" target="_blank" rel="noopener noreferrer">{{ user_profile.profile.instagram }}</a>
+                            </span>
+                        </li>
+                        {% endif %}
+
+                        {% if user_profile.profile.facebook %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                </svg>
+                                Facebook
+                            </h6>
+                            <span class="text-secondary">
+                                <a href="{{ user_profile.profile.facebook }}" target="_blank" rel="noopener noreferrer">{{ user_profile.profile.facebook }}</a>
+                            </span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <!-- Основная информация и посты -->
+            <div class="col-md-8">
+                <!-- Информация о пользователе -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <!-- Полное имя -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Полное имя</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ user_profile.first_name }} {{ user_profile.last_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Email -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <a href="mailto:{{ user_profile.email }}">{{ user_profile.email }}</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- WhatsApp -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">WhatsApp</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {% if user_profile.profile.whatsapp %}
+                                    <a href="https://wa.me/{{ user_profile.profile.whatsapp}}">{{ user_profile.profile.whatsapp }}</a>
+                                {% else %}
+                                    Не указан
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Telegram -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Telegram</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {% if user_profile.profile.telegram_username %}
+                                    <a href="https://t.me/{{ user_profile.profile.telegram_username }}">{{ user_profile.profile.telegram_username }}</a>
+                                {% else %}
+                                    Не указан
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Страна -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Страна</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ user_profile.profile.country|default:"Неизвестная страна" }}
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Кнопка редактирования профиля -->
+                        {% if request.user == user_profile %}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-info" href="{% url 'edit_profile' user_profile.username %}">Редактировать</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Посты пользователя -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h4 class="mb-4">Посты</h4>
+                        {% for post in posts %}
+                            <div class="card p-3 mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="card-text">
+                                        <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            {{ post.watched }} <i class="bi bi-eye" aria-hidden="true"></i>
+                                        </div>
+                                        {% if request.user == post.author %}
+                                            <a href="{% url 'post_update' post.pk %}" class="btn btn-primary btn-sm me-2" aria-label="Изменить пост {{ post.title }}">
+                                                <i class="bi bi-pencil-square" aria-hidden="true"></i> Изменить
+                                            </a>
+                                            <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger btn-sm" aria-label="Удалить пост {{ post.title }}">
+                                                <i class="bi bi-trash" aria-hidden="true"></i> Удалить
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>Нет постов для отображения.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

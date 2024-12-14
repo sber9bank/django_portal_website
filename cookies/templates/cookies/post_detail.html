@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container my-5">
+            <div class="row">
+                <!-- Основной контент -->
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header bg-gradient-dark text-dark d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><a href="{% url 'category_list' post.category.pk %}" class="" title="Категория - {{ post.category.title }}">{{ post.category.title }} </a>
+                               <i> > </i>
+                                <a href="{{ post.get_absolute_url }}" class="" title="Пост - {{ post.title }}"> {{ post.title }} </a></h5>
+                            <div>
+                              {% if request.user == post.author %}
+                                <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger btn-sm me-2" title="Удалить пост">
+                                    <i class="bi bi-trash"></i> Удалить
+                                </a>
+                                <a href="{% url 'post_update' post.pk %}" class="btn btn-primary btn-sm me-2" title="Изменить пост">
+                                    <i class="bi bi-pencil-square"></i> Изменить
+                                </a>
+                                <a href="{% url 'category_list' post.category.pk %}" class="btn btn-secondary btn-sm" title="Назад к категории">
+                                    <i class="bi bi-arrow-left"></i> Назад
+                                </a>
+                              {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {% if post.image %}
+                                <img src="{{ post.image.url|default:'https://www.raumplus.ru/upload/iblock/99e/Skoro-zdes-budet-foto.jpg' }}" class="img-fluid rounded mb-3" alt="{{ post.title }}">
+                            {% endif %}
+                            <h2 class="card-title">{{ post.title }}</h2>
+                            <p class="card-text">{{ post.content | linebreaks }}</p>
+                        </div>
+                        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+                            <div class="author-info d-flex align-items-center">
+                                <i class="bi bi-person-dash-fill me-1" style="font-size: 1.5rem; color: #070f35;"></i>
+                                <a href="/profile/{{ post.author.id }}" class="text-decoration-none">@{{ post.author.username }}</a>
+                            </div>
+                            <div class="text-muted">
+                                <i class="bi bi-eye"></i> {{ post.watched }}
+                                <i class="bi bi-calendar-event ms-3"></i> {{ post.published_date|date:"d.m.Y" }}
+                                <i class="bi bi-clock ms-3"></i> {{ post.published_date|date:"H:i" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Форма добавления комментария -->
+                    <div class="mb-4">
+                        {% if request.user.is_authenticated %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Оставить комментарий</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form action="{% url 'add_comment' post.pk %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {% include 'components/_form_errors.html' %}
+                                        <div class="mb-3">
+                                            {{ comment_form.text }}
+                                        </div>
+                                        <button class="btn btn-success" type="submit">Отправить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info" role="alert">
+                                <i class="bi bi-info-circle me-2"></i> Пожалуйста, <a href="{% url 'login' %}" class="alert-link">войдите в аккаунт</a>, чтобы оставить комментарий.
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Отображение комментариев -->
+                    <div class="comments-section">
+                        <h4 class="mb-3">{{ comments.count }} Комментариев</h4>
+                        {% for comment in comments %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ comment.user.profile.avatar.url|default:'https://via.placeholder.com/40' }}" alt="{{ comment.user.username }}" class="rounded-circle me-2" width="40" height="40">
+                                            <div>
+                                                <h6 class="mb-0">{{ comment.user.username }}</h6>
+                                                <small class="text-muted">{{ comment.created_at|date:"H:i, d.m.Y" }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="text-muted">
+                                            <i class="bi bi-eye"></i> {{ comment.watched }}
+                                        </div>
+                                    </div>
+                                    <p class="mt-3">{{ comment.text }}</p>
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-sm btn-outline-success like-btn me-2" data-id="{{ comment.id }}">
+                                            <i class="bi bi-hand-thumbs-up"></i> <span class="likes-count">{{ comment.likes_count }}</span>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger dislike-btn" data-id="{{ comment.id }}">
+                                            <i class="bi bi-hand-thumbs-down"></i> <span class="dislikes-count">{{ comment.dislikes_count }}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="text-muted">Нет комментариев. Будьте первым!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Рекомендации -->
+                <div class="col-lg-4">
+                    {% include 'cookies/components/_recomendations.html' %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Добавление JavaScript для обработки лайков и дизлайков -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}

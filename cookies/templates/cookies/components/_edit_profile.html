@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Редактировать профиль</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.avatar.label_tag }}
+                {{ form.avatar }}
+                {% if form.avatar.errors %}
+                    <div class="text-danger">
+                        {{ form.avatar.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {{ form.job_title.label_tag }}
+                {{ form.job_title }}
+                {% if form.job_title.errors %}
+                    <div class="text-danger">
+                        {{ form.job_title.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.bio.label_tag }}
+            {{ form.bio }}
+            {% if form.bio.errors %}
+                <div class="text-danger">
+                    {{ form.bio.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.website.label_tag }}
+            {{ form.website }}
+            {% if form.website.errors %}
+                <div class="text-danger">
+                    {{ form.website.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.github.label_tag }}
+                {{ form.github }}
+                {% if form.github.errors %}
+                    <div class="text-danger">
+                        {{ form.github.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                {{ form.instagram.label_tag }}
+                {{ form.instagram }}
+                {% if form.instagram.errors %}
+                    <div class="text-danger">
+                        {{ form.instagram.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                {{ form.facebook.label_tag }}
+                {{ form.facebook }}
+                {% if form.facebook.errors %}
+                    <div class="text-danger">
+                        {{ form.facebook.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.whatsapp.label_tag }}
+                {{ form.whatsapp }}
+                {% if form.whatsapp.errors %}
+                    <div class="text-danger">
+                        {{ form.whatsapp.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {{ form.telegram_username.label_tag }}
+                {{ form.telegram_username }}
+                {% if form.telegram_username.errors %}
+                    <div class="text-danger">
+                        {{ form.telegram_username.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.country.label_tag }}
+            {{ form.country }}
+            {% if form.country.errors %}
+                <div class="text-danger">
+                    {{ form.country.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить изменения</button>
+        <a href="{% url 'profile' user_profile.username %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

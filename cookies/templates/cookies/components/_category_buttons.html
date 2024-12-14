@@ -1,0 +1,13 @@
+    <aside class="col-3">
+        <h4>Категории</h4>
+        {% for category in categories %}
+        <div class="list-group mb-3">
+{#            <a href="{% url 'category_posts' category.id %}" class="list-group-item list-group-item-action">#}
+            <a href="{{ category.get_absolute_url }}" class="list-group-item list-group-item-action">
+                {{ category.title }}
+            </a>
+        </div>
+        {% empty %}
+        <p>Категории не найдены.</p>
+        {% endfor %}
+    </aside>

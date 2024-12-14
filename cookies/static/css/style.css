@@ -1,0 +1,35 @@
+/*!
+ * Custom Styles User
+ */
+
+/*.card-header{*/
+/*    background: rgba(149, 156, 159, 0.5);*/
+/*    color: #070f35;*/
+/*}*/
+
+/*.card-body {*/
+/*    text-align: -webkit-center;*/
+/*}*/
+
+
+.comments-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card-body {
+    text-align: -webkit-center;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); /* Градиентный фон */
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+}
+.card-body img {
+    display: inline-block;
+}
+

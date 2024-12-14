@@ -1,0 +1,17 @@
+<!--  Recommendation-->
+<div class="col-1"></div>
+<div class="col-4">
+    {% for ext in ext_posts %}
+    <div class="card mb-4" style="width: 18rem;">
+        {% if ext.image %}
+            <img src="{{ ext.image.url }}" class="card-img-top" alt="{{ ext.title }}">
+        {% else %}
+            <img src="https://www.raumplus.ru/upload/iblock/99e/Skoro-zdes-budet-foto.jpg" class="card-img-top" alt="Изображение отсутствует">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ ext.title }}</h5>
+            <a href="{{ ext.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
