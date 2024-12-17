@@ -35,3 +35,19 @@ credentials.json
 # OS files
 .DS_Store
 Thumbs.db
+
+
+# Django static and media files
+# staticfiles/
+# media/
+# .tar.gz
+# .zip
+
+# Ignore compiled files
+*.egg-info/
+*.manifest
+
+
+# Node modules (если используется)
+node_modules/
+

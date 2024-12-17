@@ -1,58 +1,70 @@
 {% load static %}
 <header>
-    <div class="container">
-        <!-- Навигация -->
-        <nav class="navbar navbar-expand-lg bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'home' %}">
-                    <img src="{% static 'images/logo.png' %}" width="75" alt="Логотип">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container-fluid">
+            <!-- Логотип -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.webp' %}" width="75" height="75" class="d-inline-block align-top me-2" alt="Логотип сайта">
+                <span class="fw-bold">PostvNarod</span>
+            </a>
+
+            <!-- Кнопка-тогглер для мобильных устройств -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Переключить навигацию">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Содержимое навигации -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Основная навигация -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Главная</a>
+                    </li>
+                    <!-- Добавьте другие пункты меню здесь -->
+                    {% if request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin:index' %}">Админка</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <!-- Форма поиска -->
+                <form class="d-flex me-3" role="search" method="get" action="{% url 'search' %}">
+                    <input name="q" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
+                    <button class="btn btn-outline-success" type="submit">Поиск</button>
+                </form>
+
+                <!-- Пользовательские действия -->
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    {% if not request.user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Главная</a>
+                            <a class="nav-link" href="{% url 'login' %}">Войти</a>
                         </li>
-                        {% if request.user.is_superuser %}
-                        <li>
-                            <a class="nav-link active" aria-current="page" href="{% url 'admin:index' %}">Админка</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Зарегистрироваться</a>
                         </li>
-                        {% endif %}
-                    </ul>
-                    <div class="d-flex">
-                        <form class="d-flex" role="search" method="get" action="{% url 'search' %}">
-                            <input name="q" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-                            <button class="btn btn-outline-success" type="submit">Поиск</button>
-                        </form>
-                        <ul class="navbar-nav ms-3 mb-2 mb-lg-0">
-                            <!-- Пользователи -->
-                            {% if not request.user.is_authenticated %}
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Войти |</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Зарегестрироваться</a>
-                                </li>
-                            {% else %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Здравствуйте, {{ user.username|default:"пользователь" }}
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Моя страница</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'add_post' %}">Добавить статью</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
-                                </ul>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
+                    {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ user.profile.avatar.url|default:'https://via.placeholder.com/30' }}"
+                                 alt="Avatar пользователя"
+                                 class="rounded-circle"
+                                 width="30"
+                                 loading="lazy">
+
+                                {{ user.username|default:"Пользователь" }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Моя страница</a></li>
+                                <li><a class="dropdown-item" href="{% url 'add_post' %}">Добавить статью</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
 </header>

@@ -23,7 +23,7 @@ class IndexView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Кулинарный портал'
+        context['title'] = 'BuzzBoard – доска, где создается "шумиха" вокруг тем и новостей.'
         context['categories'] = Category.objects.all()
         return context
 
@@ -160,7 +160,7 @@ def register(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Регистрация прошла успешно! Добро пожаловать.')
-                return redirect('profile', username=user.id)  # Перенаправление на профиль
+                return redirect('profile', identifier=username)  # Перенаправление на профиль
             else:
                 messages.error(request, 'Ошибка аутентификации. Попробуйте войти.')
                 return redirect('login')

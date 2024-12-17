@@ -17,7 +17,7 @@
                             </div>
                         </div>
                         <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="card-text">{{ post.content|truncatewords:200 }}</p>
+                        <p class="card-text">{{ post.content|truncatewords:20 }}</p>
                         <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Читать полностью</a>
                         <div class="mt-4">
                             <hr>
